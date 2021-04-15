@@ -19,8 +19,8 @@ namespace Proyecto_InmobiliariaVaras.Models
 			IList<Inmueble> res = new List<Inmueble>();
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT IdInmueble, DireccionInmueble, Ambientes, Superficie, Tipo, Precio, IdPropietario" +
-					$" FROM Inmueble";
+				string sql = $"SELECT i.IdInmueble, i.DireccionInmueble, i.Ambientes, i.Superficie, i.Tipo, i.Precio, i.IdPropietario, p.Nombre " +
+					$"FROM inmueble i INNER JOIN Propietario p ON i.IdPropietario = p.id";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.CommandType = CommandType.Text;
@@ -79,24 +79,7 @@ namespace Proyecto_InmobiliariaVaras.Models
 			return res;
 		}
 
-		public int Baja(int id)
-		{
-			int res = -1;
-			using (SqlConnection connection = new SqlConnection(connectionString))
-			{
-				string sql = $"DELETE FROM Inmuebles WHERE Id = {id}";
-				using (SqlCommand command = new SqlCommand(sql, connection))
-				{
-					command.CommandType = CommandType.Text;
-					connection.Open();
-					res = command.ExecuteNonQuery();
-					connection.Close();
-				}
-			}
-			return res;
-		}
-
-		public Inmueble ObtenerPorId(int id)
+			public Inmueble ObtenerPorId(int id)
 		{
 			Inmueble e = null;
 			using (SqlConnection connection = new SqlConnection(connectionString))
@@ -134,6 +117,22 @@ namespace Proyecto_InmobiliariaVaras.Models
 				}
 			}
 			return e;
+		}
+		public int Baja(int id)
+		{
+			int res = -1;
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				string sql = $"DELETE FROM Inmuebles WHERE Id = {id}";
+				using (SqlCommand command = new SqlCommand(sql, connection))
+				{
+					command.CommandType = CommandType.Text;
+					connection.Open();
+					res = command.ExecuteNonQuery();
+					connection.Close();
+				}
+			}
+			return res;
 		}
 
 		public int Modificar(Inmueble e)

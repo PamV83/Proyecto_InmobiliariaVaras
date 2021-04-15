@@ -81,24 +81,7 @@ namespace Proyecto_InmobiliariaVaras.Models
 			}
 			return res;
 		}
-		public int Baja(int id)
-		{
-			int res = -1;
-			using (SqlConnection connection = new SqlConnection(connectionString))
-			{
-				string sql = $"DELETE FROM Inquilino WHERE Id = @id";
-				using (SqlCommand command = new SqlCommand(sql, connection))
-				{
-					command.CommandType = CommandType.Text;
-					command.Parameters.AddWithValue("@id", id);
-					connection.Open();
-					res = command.ExecuteNonQuery();
-					connection.Close();
-				}
-			}
-			return res;
-		}
-		public Inquilino ObtenerPorId(int id)
+			public Inquilino ObtenerPorId(int id)
 		{
 
 			Inquilino i = null;
@@ -133,6 +116,24 @@ namespace Proyecto_InmobiliariaVaras.Models
 				}
 			}
 			return i;
+		}
+
+		public int Baja(int id)
+		{
+			int res = -1;
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				string sql = $"DELETE FROM Inquilino WHERE Id = @id";
+				using (SqlCommand command = new SqlCommand(sql, connection))
+				{
+					command.CommandType = CommandType.Text;
+					command.Parameters.AddWithValue("@id", id);
+					connection.Open();
+					res = command.ExecuteNonQuery();
+					connection.Close();
+				}
+			}
+			return res;
 		}
 		public int Modificar(Inquilino i)
 		{

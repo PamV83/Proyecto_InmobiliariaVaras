@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Proyecto_InmobiliariaVaras.Models.Contrato>
+
+@{
+    ViewData["Title"] = "Contratos";
+}
+
+<h1>Contratos</h1>
+
+<p>
+    <a asp-action="Create">Agregar Nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdContrato)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaFin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Importe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdInquilino)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdInmueble)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdContrato)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaFin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdInquilino)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdInmueble)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.IdContrato}) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.IdContrato }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdContrato })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
