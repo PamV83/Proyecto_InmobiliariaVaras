@@ -53,8 +53,8 @@ namespace Proyecto_InmobiliariaVaras.Controllers
         // GET: InmuebleController/Create
         public ActionResult Create()
         {
-
-            ViewBag.Propietario = repositorioPropietario.ObtenerTodos();
+            var lta = repositorioPropietario.ObtenerTodos();
+            ViewData[nameof(Propietario)] = lta;
             return View();
         }
 
@@ -92,7 +92,8 @@ namespace Proyecto_InmobiliariaVaras.Controllers
 public ActionResult Edit(int id)
         {
             var i = repositorioInmueble.ObtenerPorId(id);
-            ViewBag.Propietario = repositorioPropietario.ObtenerTodos();
+            var lista = repositorioPropietario.ObtenerTodos();
+            ViewData[nameof(Propietario)] = lista;
             if (TempData.ContainsKey("Mensaje"))
                 ViewBag.Mensaje = TempData["Mensaje"];
             if (TempData.ContainsKey("Error"))
@@ -103,11 +104,10 @@ public ActionResult Edit(int id)
         // POST: InmuebleController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Inmueble i)
+        public ActionResult Edit(Inmueble i)
         {
             try
             {
-                i.IdInmueble = id;
                 repositorioInmueble.Modificar(i);
                 TempData["Mensaje"] = "Los datos han sido modificados";
                 return RedirectToAction(nameof(Index));
@@ -117,7 +117,10 @@ public ActionResult Edit(int id)
                 ViewBag.Propietario = repositorioPropietario.ObtenerTodos();
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
-                return View(i);
+                var n = repositorioInmueble.ObtenerPorId(i.IdInmueble);
+                var lista = repositorioPropietario.ObtenerTodos();
+                ViewData[nameof(Propietario)] = lista;
+                return View(n);
             }
         }
         // GET: InmuebleController/Delete/5

@@ -84,8 +84,8 @@ namespace Proyecto_InmobiliariaVaras.Models
 			Inmueble e = null;
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT IdInmueble, DireccionInmueble, Ambientes, Superficie, Tipo, Precio, IdPropietario" +
-					$" WHERE Id=@id";
+				string sql = $"SELECT IdInmueble, DireccionInmueble, Ambientes, Superficie, Tipo, Precio, IdPropietario FROM inmueble" +
+					$" WHERE IdInmueble=@id";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -103,14 +103,8 @@ namespace Proyecto_InmobiliariaVaras.Models
 							Tipo = reader.GetString(4),
 							Precio = reader.GetInt32(5),
 							IdPropietario = reader.GetInt32(6),
-							Duenio = new Propietario
-                            {
-								Id = reader.GetInt32(6),
-								Nombre = reader.GetString(7),
-								Apellido = reader.GetString(8),
-							}
-
-						};
+							
+                          };
 
 					}
 					connection.Close();
@@ -137,12 +131,12 @@ namespace Proyecto_InmobiliariaVaras.Models
 
 		public int Modificar(Inmueble e)
 		{
-			int res = -1;
+			var res = -1;
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
 				string sql = "UPDATE Inmueble SET " +
-					"DireccionInmueble=@direccioninmueble, Ambientes=@ambientes, Superficie=@superficie, Tipo=@tipo, Precio=@precio, IdPropietario=@idpropietario " +
-					"WHERE Id = @id";
+					"DireccionInmueble=@direccioninmueble, Ambientes=@ambientes, Superficie=@superficie, Tipo=@tipo, Precio=@precio " +
+					"WHERE IdInmueble = @IdInmueble";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.Parameters.AddWithValue("@direccioninmueble", e.DireccionInmueble);
@@ -150,8 +144,7 @@ namespace Proyecto_InmobiliariaVaras.Models
 					command.Parameters.AddWithValue("@superficie", e.Superficie);
 					command.Parameters.AddWithValue("@tipo", e.Tipo);
 					command.Parameters.AddWithValue("@precio", e.Precio);
-					command.Parameters.AddWithValue("@idpropietario", e.IdPropietario);
-					command.Parameters.AddWithValue("@id", e.IdInmueble);
+					command.Parameters.AddWithValue("@idinmueble", e.IdInmueble);
 				
 
 					connection.Open();

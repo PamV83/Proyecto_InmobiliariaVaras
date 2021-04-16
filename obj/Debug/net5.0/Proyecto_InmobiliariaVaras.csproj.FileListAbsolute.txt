@@ -139,3 +139,4 @@ C:\Users\Usuario\source\repos\Proyecto_InmobiliariaVaras\Proyecto_InmobiliariaVa
 C:\Users\Usuario\source\repos\Proyecto_InmobiliariaVaras\Proyecto_InmobiliariaVaras\obj\Debug\net5.0\Razor\Views\Contrato\Details.cshtml.g.cs
 C:\Users\Usuario\source\repos\Proyecto_InmobiliariaVaras\Proyecto_InmobiliariaVaras\obj\Debug\net5.0\Razor\Views\Contrato\Create.cshtml.g.cs
 C:\Users\Usuario\source\repos\Proyecto_InmobiliariaVaras\Proyecto_InmobiliariaVaras\obj\Debug\net5.0\Razor\Views\Contrato\Edit.cshtml.g.cs
+C:\Users\Usuario\source\repos\Proyecto_InmobiliariaVaras\Proyecto_InmobiliariaVaras\obj\Debug\net5.0\Razor\Views\Contrato\Delete.cshtml.g.cs
