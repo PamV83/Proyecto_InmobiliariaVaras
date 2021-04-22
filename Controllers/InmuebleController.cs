@@ -28,19 +28,8 @@ namespace Proyecto_InmobiliariaVaras.Controllers
         // GET: InmuebleController
         public ActionResult Index()
         {
-            try
-            {
                 IList<Inmueble> lista = repositorioInmueble.ObtenerTodos();
-                ViewBag.Id = TempData["Id"];
-                ViewData["Error"] = TempData["Error"];
-                if (TempData.ContainsKey("Mensaje"))
-                    ViewBag.Mensaje = TempData["Mensaje"];
                 return View(lista);
-            }
-            catch 
-            {
-                throw;
-            }
         }
 
         // GET: InmuebleController/Details/5

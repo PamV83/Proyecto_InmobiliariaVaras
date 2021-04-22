@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Proyecto_InmobiliariaVaras.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Proyecto_InmobiliariaVaras.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,19 @@ namespace Proyecto_InmobiliariaVaras.Controllers
 {
     public class ContratoController : Controller
     {
-        private readonly RepositorioContrato repositorioContrato;
-        private readonly RepositorioInquilino repositorioInquilino;
-        private readonly RepositorioInmueble repositorioInmueble;
+        private readonly RepositorioContrato repositorio;
+        private  RepositorioInquilino repositorioInquilino;
+        private  RepositorioInmueble repositorioInmueble;
+        private  RepositorioPropietario repositorioPropietario;
 
         private readonly IConfiguration configuration;
 
         public ContratoController(IConfiguration configuration)
         {
-            this.repositorioContrato = new RepositorioContrato(configuration);
+            this.repositorio = new RepositorioContrato(configuration);
             this.repositorioInmueble = new RepositorioInmueble(configuration);
             this.repositorioInquilino = new RepositorioInquilino(configuration);
+            this.repositorioPropietario = new RepositorioPropietario(configuration); 
             this.configuration = configuration;
         }
 
@@ -29,18 +32,20 @@ namespace Proyecto_InmobiliariaVaras.Controllers
         // GET: ContratoController
         public ActionResult Index()
         {
-            IList<Contrato> lista = repositorioContrato.ObtenerTodos();
-            ViewBag.Id = TempData["Id"];
-            ViewData["Error"] = TempData["Error"];
-            if (TempData.ContainsKey("Mensaje"))
-                ViewBag.Mensaje = TempData["Mensaje"];
+            var lista = repositorio.ObtenerTodos(); 
+            if (TempData.ContainsKey("Id")) 
+                ViewBag.Id = TempData["Id"];
+            if (TempData.ContainsKey("Mensaje")) 
+                ViewBag.Mensaje = TempData["Mensaje"]; 
             return View(lista);
+
         }
 
         // GET: ContratoController/Details/5
         public ActionResult Details(int id)
         {
-            var c = repositorioContrato.ObtenerPorId(id);
+            ViewData["Error"] = TempData["Error"]; 
+            var c = repositorio.ObtenerPorId(id); 
             return View(c);
         }
 
@@ -61,7 +66,7 @@ namespace Proyecto_InmobiliariaVaras.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    repositorioContrato.Alta(c);
+                    repositorio.Alta(c);
                     TempData["Id"] = c.IdContrato;
                     TempData["Mensaje"] = "Contrato creado";
                     return RedirectToAction(nameof(Index));
@@ -77,6 +82,7 @@ namespace Proyecto_InmobiliariaVaras.Controllers
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
                 return View(c);
             }
         }
@@ -84,7 +90,7 @@ namespace Proyecto_InmobiliariaVaras.Controllers
         // GET: ContratoController/Edit/5
         public ActionResult Edit(int id)
         {
-            var c = repositorioContrato.ObtenerPorId(id);
+            var c = repositorio.ObtenerPorId(id);
             ViewBag.Inquilino = repositorioInquilino.ObtenerTodos();
             ViewBag.Inmueble = repositorioInmueble.ObtenerTodos();
             if (TempData.ContainsKey("Mensaje"))
@@ -102,7 +108,7 @@ namespace Proyecto_InmobiliariaVaras.Controllers
             try
             {
                 c.IdContrato = id;
-                repositorioContrato.Modificar(c);
+                repositorio.Modificar(c);
                 TempData["Mensaje"] = "Los datos han sido modificados";
                 return RedirectToAction(nameof(Index));
 
@@ -120,7 +126,7 @@ namespace Proyecto_InmobiliariaVaras.Controllers
         // GET: ContratoController/Delete/5
         public ActionResult Delete(int id)
         {
-            var c = repositorioContrato.ObtenerPorId(id);
+            var c = repositorio.ObtenerPorId(id);
 
             if (TempData.ContainsKey("Mensaje"))
                 ViewBag.Mensaje = TempData["Mensaje"];
@@ -136,7 +142,7 @@ namespace Proyecto_InmobiliariaVaras.Controllers
         {
             try
             {
-                repositorioContrato.Baja(id);
+                repositorio.Baja(id);
                 TempData["Mensaje"] = "El contrato ha sido eliminado";
                 return RedirectToAction(nameof(Index));
             }
@@ -144,6 +150,7 @@ namespace Proyecto_InmobiliariaVaras.Controllers
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
                 return View(c);
             }
         }

@@ -19,8 +19,10 @@ namespace Proyecto_InmobiliariaVaras.Models
             IList<Contrato> res = new List<Contrato>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = "SELECT IdContrato, FechaIn, FechaFin, Importe, IdInquilino, IdInmueble, i.Nombre, i.Apellido, n.Direccion, n.PropietarioId " +
-                    " FROM Contrato c INNER JOIN Inquilino i ON c.IdInquilino = i.IdInquilino INNER JOIN Inmueble n ON c.IdInmueble = n.IdInmueble";
+                string sql = $"SELECT IdContrato, FechaIn, FechaFin, Importe," +
+                    $" i.Nombre, i.Apellido " +
+                    $" e.DireccionInmueble " +
+                     $" FROM Contrato c INNER JOIN Inmueble inm ON c.IdInmueble = inm.IdInmueble INNER JOIN Inquilino inq ON c.IdInquilino = inq.Id";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -62,22 +64,22 @@ namespace Proyecto_InmobiliariaVaras.Models
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string sql = $"INSERT INTO Contrato (FechaIn, FechaFin, Importe, IdInquilino, IdInmueble)" +
-                             "VALUES ( @fechain, @fechafin, @importe, @idinquilino, @idinmueble);" +
+                             $"VALUES (@fechain, @fechafin, @importe, @idinquilino, @idinmueble);" +
                              "SELECT SCOPE_IDENTITY();";
-                using (var command = new SqlCommand(sql, connection))
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
-                    command.Parameters.AddWithValue("@fechain", c.FechaIn);
-                    command.Parameters.AddWithValue("@fechafin", c.FechaFin);
+                    command.Parameters.AddWithValue("@fechaIn", c.FechaIn);
+                    command.Parameters.AddWithValue("@fechaFin", c.FechaFin);
                     command.Parameters.AddWithValue("@importe", c.Importe);
-                    command.Parameters.AddWithValue("@idinquilino", c.IdInquilino);
-                    command.Parameters.AddWithValue("@idinmueble", c.IdInmueble);
+                    command.Parameters.AddWithValue("@idInquilino", c.IdInquilino);
+                    command.Parameters.AddWithValue("@idInmueble", c.IdInmueble);
                     connection.Open();
                     res = Convert.ToInt32(command.ExecuteScalar());
                     c.IdContrato = res;
                     connection.Close();
                 }
-            }
+        }
             return res;
         }
         public Contrato ObtenerPorId(int id)
@@ -147,9 +149,8 @@ namespace Proyecto_InmobiliariaVaras.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = "UPDATE Contrato SET " +
-                     "FechaIn = @fechain, FechaFin = @fechafin,  Importe=@importe, IdInquilino= @idinquilino, IdInmueble= @idinmueble " +
-                    "WHERE IdContrato = @id";
+                string sql = $"UPDATE Contrato SET FechaIn=@fechain, FechaFin=@fechafin, Importe=@importe, IdInquilino=@idinquilino, IdInmueble= @idinmueble " +
+                    $"WHERE IdContrato = {c.IdContrato}";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
 

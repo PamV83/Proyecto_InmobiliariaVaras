@@ -19,7 +19,7 @@ namespace Proyecto_InmobiliariaVaras.Models
 			IList<Inmueble> res = new List<Inmueble>();
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT i.IdInmueble, i.DireccionInmueble, i.Ambientes, i.Superficie, i.Tipo, i.Precio, i.IdPropietario, p.Nombre " +
+				string sql = $"SELECT IdInmueble, DireccionInmueble, Ambientes, Superficie, Tipo, Precio, IdPropietario, p.Nombre, p.Apellido " +
 					$"FROM inmueble i INNER JOIN Propietario p ON i.IdPropietario = p.id";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
@@ -40,8 +40,8 @@ namespace Proyecto_InmobiliariaVaras.Models
 							Duenio = new Propietario
 							{
 								Id = reader.GetInt32(6),
-								Nombre = reader.GetString(7)
-
+								Nombre = reader.GetString(7),
+								Apellido = reader.GetString(8)
 							}
 
 						};
